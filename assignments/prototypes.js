@@ -25,12 +25,7 @@ GameObject.prototype.destroy = function(){
   return `${this.name} was removed from the game.`
 };
 
-// const mage = new GameObject({
-//   createdAt: 20,
-//   name: 'Boron',
-//   dimensions: '20 feet'
-// });
-// console.log(mage);
+
 
 /*
   === CharacterStats ===
@@ -39,12 +34,22 @@ GameObject.prototype.destroy = function(){
   * should inherit destroy() from GameObject's prototype
 */
 function CharacterStats(character){
+  GameObject.call(this, character);
   this.healthPoints = character.healthPoints;
 
 };
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
 CharacterStats.prototype.takeDamage = function(){
   return `${this.name} took damage.`
 };
+
+// const mage = new CharacterStats({
+//   createdAt: 20,
+//   name: 'Boron',
+//   dimensions: '20 feet'
+// });
+// console.log(mage);
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -56,10 +61,14 @@ CharacterStats.prototype.takeDamage = function(){
   * should inherit takeDamage() from CharacterStats
 */
 function Humanoid (human){
+  GameObject.call(this, human);
+  CharacterStats.call(this, human);
   this.team = human.team;
   this.weapons = human.weapons;
   this.language = human.language;
-}
+};
+Humanoid.prototype = Object.create(GameObject.prototype);
+Humanoid.prototype = Object.create(CharacterStats.prototype);
 Humanoid.prototype.greet = function(){
   return `${this.name} offers a greeting in ${this.language}`
 };
@@ -72,7 +81,7 @@ Humanoid.prototype.greet = function(){
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -133,7 +142,7 @@ Humanoid.prototype.greet = function(){
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
